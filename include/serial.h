@@ -8,6 +8,8 @@
 #define RX_BUFFER_SIZE	32
 #define QUEUE_SIZE		20
 
+static QueueHandle_t uart_queue[UART_NUM_MAX];
+
 typedef struct {
 	int tx_pin;
 	int rx_pin;

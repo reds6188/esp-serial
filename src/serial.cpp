@@ -40,7 +40,7 @@ void Uart::end(void) {
     if(uart_wait_tx_done(_uart_num, 100) == ESP_ERR_TIMEOUT)
         Serial.println("UART TX FIFO Empty timeout error");
 
-    if(uart_driver_delete(uart_num) != ESP_OK) {
+    if(uart_driver_delete(_uart_num) != ESP_OK) {
         Serial.println("Failed to delete drivers for UART" + String(_uart_num));
     }
     else {
@@ -89,8 +89,8 @@ void Uart::UartIrqHandler(void *pvParameters) {
                     }
                     else {
                         uart_data_length = uart_read_bytes(uart_n, uart_data, uart_data_length, 100);
-                        if(pThis->handler != nullptr) {
-                            (*(pThis->handler))(uart_data, uart_data_length);
+                        if(pThis->_handler != nullptr) {
+                            (*(pThis->_handler))(uart_data, uart_data_length);
                         }
                         else {
                             Serial.println("Pointer is null");
