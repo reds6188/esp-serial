@@ -16,6 +16,14 @@ typedef struct {
 	int en_pin;
 } uart_pin_t;
 
+typedef struct {
+    unsigned long fifo_ovl;
+    unsigned long buffer_full;
+    unsigned long rx_break;
+    unsigned long parity_err;
+    unsigned long frame_err;
+} uart_error_t;
+
 class Uart {
 	private:
 		uart_port_t _uart_num;
