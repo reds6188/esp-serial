@@ -23,7 +23,7 @@ esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
         return ESP_FAIL;
     }
 
-    if(uart_driver_install(_uart_num, BUF_SIZE, BUF_SIZE, QUEUE_SIZE, &uart_queue[uart_num], 0) != ESP_OK) {
+    if(uart_driver_install(_uart_num, BUF_SIZE, BUF_SIZE, QUEUE_SIZE, &uart_queue[_uart_num], 0) != ESP_OK) {
         return ESP_FAIL;
     }
 
@@ -37,8 +37,6 @@ esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
 }
 
 void Uart::end(void) {
-    String uTag = uart_tag[uart_num];
-
     if(uart_wait_tx_done(_uart_num, 100) == ESP_ERR_TIMEOUT)
         Serial.println("UART TX FIFO Empty timeout error");
 
@@ -54,7 +52,7 @@ void Uart::end(void) {
 esp_err_t Uart::setHandler(void(*callback)(uint8_t *data, int data_size)) {
 
     BaseType_t result = pdPASS;
-    this->handler = callback;
+    _handler = callback;
     xHandle = NULL;
     if(xTaskCreate(UartIrqHandler, "UART_ISR_ROUTINE", 2048, this, 12, &xHandle) == pdPASS) {
         return ESP_OK;
@@ -67,7 +65,7 @@ void Uart::UartIrqHandler(void *pvParameters) {
     Uart *pThis = (Uart *) pvParameters;
     uart_event_t event;
     uint8_t *uart_data = (uint8_t*) malloc(RX_BUFFER_SIZE);
-    uart_port_t uart_n = pThis->uart_num;
+    uart_port_t uart_n = pThis->_uart_num;
     //console.log(uart_tag[uart_n], "Rx handler was set");
 
 	bool exit_condition = false;
@@ -149,8 +147,8 @@ void Uart::UartIrqHandler(void *pvParameters) {
 void Uart::writeData(uint8_t *data, int data_size) {
 	if(en_pin != UART_PIN_NO_CHANGE)
 		digitalWrite(en_pin, HIGH);
-	uart_write_bytes(uart_num, (const char*)data, data_size);
-	uart_wait_tx_done(uart_num, 100);
+	uart_write_bytes(_uart_num, (const char*)data, data_size);
+	uart_wait_tx_done(_uart_num, 100);
 	if(en_pin != UART_PIN_NO_CHANGE)
 		digitalWrite(en_pin, LOW);
 }

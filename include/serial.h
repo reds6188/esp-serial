@@ -28,7 +28,7 @@ class Uart {
 	private:
 		uart_port_t _uart_num;
 		TaskHandle_t xHandle;
-		void (*handler)(uint8_t *data, int data_size);
+		void (*_handler)(uint8_t *data, int data_size);
 		uart_error_t uart_error;
 		int en_pin = UART_PIN_NO_CHANGE;
 	public:
