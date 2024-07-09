@@ -4,6 +4,10 @@
 #include <Arduino.h>
 #include "driver/uart.h"
 
+#define BUF_SIZE		(1024 * 2)
+#define RX_BUFFER_SIZE	32
+#define QUEUE_SIZE		20
+
 typedef struct {
 	int tx_pin;
 	int rx_pin;
