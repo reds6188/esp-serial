@@ -1,0 +1,18 @@
+{
+	"name": "esp-library-template",
+	"keywords": "template, library, esp32",
+	"description": "Template Library for ESP32",
+	"homepage": "https://github.com/reds6188/esp-library-template.git",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/reds6188/esp-library-template.git"
+	},
+	"authors": {
+		"name": "Daniele Rossi",
+		"email": "reds6188@gmail.com",
+		"maintainer": true
+	},
+	"version": "1.0.0",
+	"frameworks": "arduino",
+	"platforms": "espressif32"
+}
