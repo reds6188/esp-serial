@@ -12,7 +12,7 @@
 		"email": "reds6188@gmail.com",
 		"maintainer": true
 	},
-	"version": "1.0.0",
+	"version": "1.0.0-beta",
 	"frameworks": "arduino",
 	"platforms": "espressif32"
 }
