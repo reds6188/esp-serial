@@ -33,6 +33,7 @@ class Uart {
 		void (*_handler)(uint8_t *data, int data_size);
 		uart_error_t uart_error;
 		int en_pin = UART_PIN_NO_CHANGE;
+		uint8_t _buffer_size;
 	public:
 		Uart();
 		Uart(uart_port_t uart_num);
