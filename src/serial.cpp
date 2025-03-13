@@ -65,7 +65,7 @@ esp_err_t Uart::setHandler(void(*callback)(uint8_t *data, int data_size)) {
 void Uart::UartIrqHandler(void *pvParameters) {
     Uart *pThis = (Uart *) pvParameters;
     uart_event_t event;
-    uint8_t *uart_data = (uint8_t*) malloc(_buffer_size);
+    uint8_t *uart_data = (uint8_t*) malloc(pThis->_buffer_size);
     uart_port_t uart_n = pThis->_uart_num;
     //console.log(uart_tag[uart_n], "Rx handler was set");
 
@@ -76,7 +76,7 @@ void Uart::UartIrqHandler(void *pvParameters) {
         if(xQueueReceive(uart_queue[uart_n], (void * )&event, (portTickType)portMAX_DELAY))
         {
             int uart_data_length = 0;
-            bzero(uart_data, _buffer_size);
+            bzero(uart_data, pThis->_buffer_size);
             switch(event.type)
             {
                 // Event of UART receving data
@@ -84,7 +84,7 @@ void Uart::UartIrqHandler(void *pvParameters) {
                     //int uart_data_length = 0;
                     uart_get_buffered_data_len(uart_n, (size_t*)&uart_data_length);
                     //Serial.printf("uart length: %d\n", uart_data_length);
-                    if(uart_data_length > _buffer_size) {
+                    if(uart_data_length > pThis->_buffer_size) {
                         Serial.println("Length exceeds the maximum allowed");
                         uart_flush_input(uart_n);
                     }
