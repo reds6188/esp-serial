@@ -3,13 +3,17 @@
 Uart::Uart() {
 }
 
-Uart::Uart(uart_port_t uart_num, uint8_t buffer_size = RX_BUFFER_SIZE) {
+Uart::Uart(uart_port_t uart_num, uint8_t buffer_size) {
     _uart_num = uart_num;
     _buffer_size = buffer_size;
 }
 
 void Uart::setNum(uart_port_t uart_num) {
     _uart_num = uart_num;
+}
+
+void Uart::setBufferSize(uint8_t buffer_size) {
+    _buffer_size = buffer_size;
 }
 
 esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
