@@ -1,6 +1,7 @@
 #include "serial.h"
 
 Uart::Uart() {
+    _buffer_size = RX_BUFFER_SIZE;
 }
 
 Uart::Uart(uart_port_t uart_num, uint8_t buffer_size) {
