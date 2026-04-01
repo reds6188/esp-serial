@@ -2,11 +2,19 @@
 
 Uart::Uart() {
     _buffer_size = RX_BUFFER_SIZE;
+	_en_inv = false;
 }
 
 Uart::Uart(uart_port_t uart_num, uint8_t buffer_size) {
     _uart_num = uart_num;
     _buffer_size = buffer_size;
+	_en_inv = false;
+}
+
+Uart::Uart(uart_port_t uart_num, uint8_t buffer_size, bool enable_inverted) {
+    _uart_num = uart_num;
+    _buffer_size = buffer_size;
+	_en_inv = enable_inverted;
 }
 
 void Uart::setNum(uart_port_t uart_num) {
@@ -35,8 +43,8 @@ esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
 
     if(uart_pin.en_pin != UART_PIN_NO_CHANGE) {
         en_pin = uart_pin.en_pin;
-        pinMode(uart_pin.en_pin, OUTPUT);       // Pin per il driver esterno
-        digitalWrite(uart_pin.en_pin, HIGH);    // Driver in ricezione
+        pinMode(uart_pin.en_pin, OUTPUT);       				// Pin per il driver esterno
+        digitalWrite(uart_pin.en_pin, _en_inv ? LOW : HIGH);    // Driver in ricezione
     }
 
     return ESP_OK;
@@ -152,9 +160,9 @@ void Uart::UartIrqHandler(void *pvParameters) {
 
 void Uart::writeData(uint8_t *data, int data_size) {
 	if(en_pin != UART_PIN_NO_CHANGE)
-		digitalWrite(en_pin, HIGH);
+		digitalWrite(en_pin, _en_inv ? LOW : HIGH);
 	uart_write_bytes(_uart_num, (const char*)data, data_size);
 	uart_wait_tx_done(_uart_num, 100);
 	if(en_pin != UART_PIN_NO_CHANGE)
-		digitalWrite(en_pin, LOW);
+		digitalWrite(en_pin, _en_inv ? HIGH : LOW);
 }

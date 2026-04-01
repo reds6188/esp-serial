@@ -34,9 +34,11 @@ class Uart {
 		uart_error_t uart_error;
 		int en_pin = UART_PIN_NO_CHANGE;
 		uint8_t _buffer_size;
+		bool _en_inv;
 	public:
 		Uart();
-		Uart(uart_port_t uart_num, uint8_t buffer_size = RX_BUFFER_SIZE);
+		Uart(uart_port_t uart_num, uint8_t buffer_size);
+		Uart(uart_port_t uart_num, uint8_t buffer_size = RX_BUFFER_SIZE, bool enable_inverted = false);
 		void setNum(uart_port_t uart_num);
 		void setBufferSize(uint8_t buffer_size);
 		esp_err_t begin(uart_pin_t uart_pin, uart_config_t uart_config);
