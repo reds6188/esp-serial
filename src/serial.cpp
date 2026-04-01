@@ -25,6 +25,10 @@ void Uart::setBufferSize(uint8_t buffer_size) {
     _buffer_size = buffer_size;
 }
 
+void Uart::setEnableInverted(bool inverted) {
+    _en_inv = inverted;
+}
+
 esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
 
     if(uart_param_config(_uart_num, &uart_config) != ESP_OK) {
