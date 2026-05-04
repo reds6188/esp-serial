@@ -29,6 +29,10 @@ void Uart::setEnableInverted(bool inverted) {
     _en_inv = inverted;
 }
 
+void Uart::setBaudrate(uint32_t baudrate) {
+	uart_set_baudrate(_uart_num, baudrate);
+}
+
 esp_err_t Uart::begin(uart_pin_t uart_pin, uart_config_t uart_config) {
 
     if(uart_param_config(_uart_num, &uart_config) != ESP_OK) {
